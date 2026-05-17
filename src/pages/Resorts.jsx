@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import InquiryForm from '../components/InquiryForm';
 
 const ASSETS = [
@@ -36,20 +36,30 @@ const ASSETS = [
 const FILTERS = ['All Locations', 'Anaikatti', 'Solaiyur', 'Ooty'];
 
 const formFields = [
-  { id: 'name',     label: 'Full Name',          type: 'text',  placeholder: 'John Doe',            required: true,  half: true },
-  { id: 'email',    label: 'Email Address',       type: 'email', placeholder: 'john@example.com',    required: true,  half: true },
+  { id: 'name',     label: 'Full Name',       type: 'text',  placeholder: 'John Doe',         required: true,  half: true },
+  { id: 'email',    label: 'Email Address',   type: 'email', placeholder: 'john@example.com', required: true,  half: true },
   {
     id: 'interest', label: 'Plot of Interest', type: 'select', required: true, half: false,
     options: [
-      { value: 'a12', label: 'Plot A-12, Anaikatti' },
-      { value: 's05', label: 'Plot S-05, Solaiyur' },
-      { value: 'o22', label: 'Plot O-22, Ooty' },
+      { value: 'a12',     label: 'Plot A-12, Anaikatti' },
+      { value: 's05',     label: 'Plot S-05, Solaiyur' },
+      { value: 'o22',     label: 'Plot O-22, Ooty' },
       { value: 'general', label: 'General Inquiry' },
     ],
   },
 ];
 
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
+};
+const itemVariants = {
+  hidden:  { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+};
+
 export default function Resorts() {
+  const shouldReduceMotion = useReducedMotion();
   const [active, setActive] = useState('All Locations');
 
   const filtered = active === 'All Locations'
@@ -57,15 +67,20 @@ export default function Resorts() {
     : ASSETS.filter((a) => a.location === active);
 
   return (
-    <main className="page-enter pt-32 pb-24 px-6 md:px-12 max-w-[1600px] mx-auto min-h-screen">
+    <main className="page-enter pt-32 pb-24 px-6 md:px-12 max-w-[1600px] mx-auto min-h-screen bg-mp-cream">
       {/* Header */}
       <header className="mb-20 mt-8 max-w-3xl mx-auto text-center">
-        <p className="font-body text-primary font-semibold text-sm uppercase tracking-[0.1em] mb-4">Investment Portfolio</p>
-        <h1 className="font-headline text-5xl md:text-6xl text-primary font-bold leading-tight mb-6">
-          Curated Resort Assets
+        <p className="font-sans text-mp-forest font-semibold text-xs uppercase tracking-[0.15em] mb-4">
+          {/* COPY: original — "Investment Portfolio" — flagged for human review */}
+          Anaikatti · Solaiyur · Ooty
+        </p>
+        <h1 className="font-display font-light text-5xl md:text-6xl text-mp-forest leading-tight mb-6">
+          {/* COPY: original — "Curated Resort Assets" — flagged for human review */}
+          The properties.
         </h1>
-        <p className="font-body text-on-surface-variant text-lg leading-relaxed">
-          Discover exclusive investment opportunities within our premium resort developments. Each plot offers a unique blend of natural beauty and architectural integrity.
+        <p className="font-sans text-mp-stone-dark text-lg leading-relaxed">
+          {/* COPY: original body — flagged for human review */}
+          Three locations. Each chosen for what you see when you look up from your tea.
         </p>
       </header>
 
@@ -75,10 +90,11 @@ export default function Resorts() {
           <button
             key={f}
             onClick={() => setActive(f)}
-            className={`px-6 py-2 rounded-full font-label text-sm tracking-wide transition-all duration-300 ${
+            className={`px-6 py-2 rounded-full font-sans text-sm tracking-wide transition-all duration-300
+                        focus:outline-none focus:ring-2 focus:ring-mp-gold focus:ring-offset-2 focus:ring-offset-mp-cream ${
               active === f
-                ? 'bg-primary text-white shadow-[0_6px_20px_rgba(38,39,125,0.25)]'
-                : 'bg-surface-container-highest text-primary hover:bg-surface-dim'
+                ? 'bg-mp-forest text-mp-cream shadow-mp-ambient'
+                : 'bg-mp-stone text-mp-forest hover:bg-mp-stone-dark/20'
             }`}
           >
             {f}
@@ -87,72 +103,76 @@ export default function Resorts() {
       </div>
 
       {/* Grid */}
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-32">
-        {filtered.map((asset, i) => (
+      <motion.section
+        variants={containerVariants}
+        initial={shouldReduceMotion ? false : 'hidden'}
+        animate="visible"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-32"
+      >
+        {filtered.map((asset) => (
           <motion.article
             key={asset.id}
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-            className="group bg-surface-container-lowest rounded-lg overflow-hidden
-                       shadow-[0_10px_30px_rgba(38,39,125,0.05)]
-                       hover:shadow-[0_20px_60px_rgba(38,39,125,0.10)]
-                       transition-all duration-300 hover:-translate-y-2"
+            variants={itemVariants}
+            className="resort-card group bg-mp-white rounded-lg overflow-hidden
+                       shadow-mp-ambient hover:shadow-mp-ambient-lg
+                       transition-shadow duration-300"
           >
             <div className="h-64 overflow-hidden relative">
               <img
                 src={asset.img}
                 alt={asset.name}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="card-image w-full h-full object-cover"
               />
-              <div className="absolute top-4 right-4 bg-surface/80 backdrop-blur-md px-3 py-1 rounded-md
-                              text-primary font-label text-xs tracking-widest uppercase">
+              <div className="absolute top-4 right-4 bg-mp-forest/80 backdrop-blur-md px-3 py-1 rounded-md
+                              text-mp-gold font-sans text-xs tracking-widest uppercase">
                 {asset.location}
               </div>
             </div>
             <div className="p-8">
-              <h3 className="text-2xl font-headline text-primary mb-2">{asset.name}</h3>
-              <p className="text-on-surface-variant font-body mb-8">{asset.desc}</p>
-              <div className="flex justify-between items-end border-t border-surface-container-high pt-6">
+              <h3 className="text-xl font-sans font-bold text-mp-ink mb-2 group-hover:text-mp-gold transition-colors duration-300">
+                {asset.name}
+              </h3>
+              <p className="text-mp-stone-dark font-sans mb-8">{asset.desc}</p>
+              <div className="flex justify-between items-end border-t border-mp-stone pt-6">
                 <div>
-                  <div className="text-sm font-label text-secondary mb-1">Investment</div>
-                  <div className="text-xl font-bold font-body text-primary">{asset.price}</div>
+                  <div className="text-sm font-sans text-mp-stone-dark mb-1">Investment</div>
+                  <div className="text-xl font-bold font-sans text-mp-forest">{asset.price}</div>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm font-label text-secondary mb-1">Area</div>
-                  <div className="text-lg font-body text-on-surface">{asset.area}</div>
+                  <div className="text-sm font-sans text-mp-stone-dark mb-1">Area</div>
+                  <div className="text-lg font-sans text-mp-ink">{asset.area}</div>
                 </div>
               </div>
             </div>
           </motion.article>
         ))}
-      </section>
+      </motion.section>
 
       {/* Contact CTA */}
-      <section className="max-w-5xl mx-auto bg-surface-container-low rounded-xl p-10 md:p-16 relative overflow-hidden
-                          shadow-[0_20px_60px_rgba(38,39,125,0.05)]">
+      <section className="max-w-5xl mx-auto bg-mp-stone rounded-xl p-10 md:p-16 relative overflow-hidden shadow-mp-ambient">
         <div className="absolute inset-0 opacity-10 pointer-events-none"
-             style={{ background: 'radial-gradient(circle at right center, #26277d 0%, transparent 50%)' }} />
+             style={{ background: 'radial-gradient(circle at right center, oklch(28% 0.07 145) 0%, transparent 50%)' }} />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 relative z-10">
           <div>
-            <h2 className="font-headline text-3xl md:text-4xl text-primary font-bold mb-6">
-              Inquire About an Asset
+            <h2 className="font-display font-light text-3xl md:text-4xl text-mp-forest mb-6">
+              Inquire about a plot.
             </h2>
-            <p className="font-body text-on-surface-variant text-lg mb-8 leading-relaxed">
-              Connect with our investment advisors to discuss your architectural narrative and secure a premium resort plot.
+            <p className="font-sans text-mp-stone-dark text-lg mb-8 leading-relaxed">
+              {/* COPY: original — "Connect with our investment advisors... architectural narrative" — flagged for human review */}
+              Tell us which site caught your eye. We'll arrange a visit.
             </p>
-            <div className="space-y-4 font-body text-on-surface">
+            <div className="space-y-4 font-sans text-mp-ink">
               <div className="flex items-center gap-4">
-                <span className="material-symbols-outlined text-tertiary">call</span>
+                <span className="material-symbols-outlined text-mp-gold">call</span>
                 <span>73393 36300</span>
               </div>
               <div className="flex items-center gap-4">
-                <span className="material-symbols-outlined text-tertiary">mail</span>
+                <span className="material-symbols-outlined text-mp-gold">mail</span>
                 <span>invest@markprom.com</span>
               </div>
             </div>
           </div>
-          <div className="bg-surface-container-lowest p-8 rounded-lg ambient-shadow">
+          <div className="bg-mp-cream p-8 rounded-lg shadow-mp-ambient">
             <InquiryForm fields={formFields} submitLabel="Submit Inquiry" />
           </div>
         </div>

@@ -10,7 +10,7 @@ const links = [
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled]     = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
@@ -23,16 +23,17 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/85 backdrop-blur-xl shadow-[0_20px_50px_rgba(38,39,125,0.07)]'
-          : 'bg-white/70 backdrop-blur-md'
+          ? 'bg-mp-cream/90 backdrop-blur-xl shadow-mp-ambient-sm'
+          : 'bg-mp-cream/70 backdrop-blur-md'
       }`}
     >
       <div className="flex justify-between items-center px-6 md:px-12 py-5 max-w-[1440px] mx-auto">
         {/* Brand */}
         <Link
           to="/"
-          className="text-2xl font-headline font-bold text-primary tracking-widest uppercase
-                     hover:opacity-80 transition-opacity duration-300"
+          className="text-2xl font-display font-light text-mp-forest tracking-widest uppercase
+                     hover:opacity-80 transition-opacity duration-300
+                     focus:outline-none focus:ring-2 focus:ring-mp-gold focus:ring-offset-2 focus:ring-offset-mp-cream"
         >
           Markprom
         </Link>
@@ -44,10 +45,11 @@ export default function Navbar() {
               key={to}
               to={to}
               className={({ isActive }) =>
-                `font-body text-sm transition-all duration-300 pb-0.5 ${
+                `font-sans text-sm transition-all duration-300 pb-0.5
+                 focus:outline-none focus:ring-2 focus:ring-mp-gold focus:ring-offset-2 focus:ring-offset-mp-cream ${
                   isActive
-                    ? 'text-primary font-semibold border-b-2 border-tertiary-fixed-dim'
-                    : 'text-slate-500 hover:text-primary'
+                    ? 'text-mp-forest font-semibold border-b-2 border-mp-gold'
+                    : 'text-mp-stone-dark hover:text-mp-forest'
                 }`
               }
             >
@@ -60,17 +62,18 @@ export default function Navbar() {
         <Link
           to="/contact"
           className="hidden md:inline-flex items-center justify-center px-6 py-3
-                     bg-gradient-to-r from-primary to-primary-container text-white
-                     font-body font-medium rounded-DEFAULT text-sm
-                     hover:opacity-90 transition-opacity duration-300
-                     shadow-[0_10px_30px_rgba(38,39,125,0.2)]"
+                     bg-mp-forest text-mp-cream
+                     font-sans font-medium rounded-DEFAULT text-sm
+                     hover:bg-mp-forest-light transition-colors duration-300
+                     shadow-mp-ambient-sm
+                     focus:outline-none focus:ring-2 focus:ring-mp-gold focus:ring-offset-2 focus:ring-offset-mp-cream"
         >
           Invest Now
         </Link>
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden text-primary"
+          className="md:hidden text-mp-forest focus:outline-none focus:ring-2 focus:ring-mp-gold focus:ring-offset-2 focus:ring-offset-mp-cream"
           onClick={() => setMobileOpen((v) => !v)}
           aria-label="Toggle menu"
         >
@@ -88,7 +91,7 @@ export default function Navbar() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="md:hidden overflow-hidden bg-white border-t border-surface-container-high"
+            className="md:hidden overflow-hidden bg-mp-cream border-t border-mp-stone"
           >
             <div className="flex flex-col px-6 py-6 gap-6">
               {links.map(({ to, label }) => (
@@ -97,8 +100,8 @@ export default function Navbar() {
                   to={to}
                   onClick={() => setMobileOpen(false)}
                   className={({ isActive }) =>
-                    `font-body text-base ${
-                      isActive ? 'text-primary font-semibold' : 'text-slate-500'
+                    `font-sans text-base focus:outline-none focus:ring-2 focus:ring-mp-gold ${
+                      isActive ? 'text-mp-forest font-semibold' : 'text-mp-stone-dark'
                     }`
                   }
                 >
@@ -109,8 +112,9 @@ export default function Navbar() {
                 to="/contact"
                 onClick={() => setMobileOpen(false)}
                 className="inline-flex items-center justify-center px-6 py-3
-                           bg-gradient-to-r from-primary to-primary-container text-white
-                           font-body font-medium rounded-DEFAULT text-sm"
+                           bg-mp-forest text-mp-cream
+                           font-sans font-medium rounded-DEFAULT text-sm
+                           focus:outline-none focus:ring-2 focus:ring-mp-gold focus:ring-offset-2 focus:ring-offset-mp-cream"
               >
                 Invest Now
               </Link>

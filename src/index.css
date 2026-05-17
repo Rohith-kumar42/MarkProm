@@ -3,42 +3,49 @@
 @tailwind utilities;
 
 /* ── Base ── */
+:root {
+  --mp-forest:      oklch(28% 0.07 145);
+  --mp-forest-light: oklch(38% 0.07 145);
+  --mp-forest-deep: oklch(18% 0.05 145);
+  --mp-gold:        oklch(72% 0.16 75);
+  --mp-gold-muted:  oklch(80% 0.10 75);
+  --mp-gold-dark:   oklch(58% 0.14 75);
+  --mp-stone:       oklch(92% 0.01 90);
+  --mp-stone-dark:  oklch(50% 0.01 90);
+  --mp-cream:       oklch(97% 0.01 90);
+  --mp-ink:         oklch(18% 0.02 260);
+  --mp-white:       #ffffff;
+}
+
 body {
-  font-family: 'Manrope', sans-serif;
-  background-color: #f8f9fb;
-  color: #191c1e;
+  font-family: 'Manrope', system-ui, sans-serif;
+  background-color: var(--mp-cream);
+  color: var(--mp-ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6, .font-headline {
-  font-family: 'Noto Serif', serif;
+/* Display headings use Instrument Serif */
+h1, h2, h3, h4, h5, h6, .font-display, .font-headline {
+  font-family: 'Instrument Serif', Georgia, serif;
 }
 
 /* ── Selection ── */
 ::selection {
-  background-color: #e1e0ff;
-  color: #090467;
+  background-color: var(--mp-gold-muted);
+  color: var(--mp-forest-deep);
 }
 
 /* ── Glass panel ── */
 .glass-panel {
-  background: rgba(248, 249, 251, 0.72);
+  background: rgba(248, 247, 244, 0.72); /* mp-cream tint */
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
 
-/* ── Ambient shadow ── */
+/* ── Ambient shadow (brand-tinted) ── */
 .ambient-shadow {
-  box-shadow: 0 30px 60px rgba(38, 39, 125, 0.08);
-}
-
-/* ── Parallax image ── */
-.parallax-bg {
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  box-shadow: 0 8px 40px oklch(28% 0.07 145 / 0.12);
 }
 
 /* ── Hide scrollbar ── */
@@ -55,16 +62,39 @@ h1, h2, h3, h4, h5, h6, .font-headline {
   line-height: 1;
 }
 
+/* ── Card image clip-path reveal (Phase 3C) ── */
+/* Safari fallback: oklch is supported in Safari 15.4+, clip-path in Safari 14+ */
+.card-image {
+  clip-path: inset(3% round 10px);
+  transition: clip-path 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: clip-path;
+}
+.resort-card:hover .card-image,
+.group:hover .card-image {
+  clip-path: inset(0% round 6px);
+}
+
+/* ── Scroll-cue animation ── */
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); opacity: 0.7; }
+  50%       { transform: translateY(8px); opacity: 1; }
+}
+.scroll-cue {
+  animation: scrollBounce 1.8s ease-in-out infinite;
+}
+
 /* ── Bottom-line input style ── */
 .input-line {
-  @apply w-full bg-surface-container-low border-0 border-b-2 border-surface-container-high
-         px-4 py-3 font-body text-on-surface focus:ring-0 focus:border-tertiary
-         transition-colors duration-300 outline-none;
+  @apply w-full bg-mp-stone border-0 border-b-2 border-mp-stone-dark
+         px-4 py-3 font-sans text-mp-ink focus:ring-0
+         focus:outline-none focus:ring-2 focus:ring-mp-gold
+         focus:ring-offset-2 focus:ring-offset-mp-cream
+         transition-colors duration-300;
 }
 
 /* ── Floating label ── */
 .label-float {
-  @apply absolute left-4 top-3 text-secondary font-label text-sm
+  @apply absolute left-4 top-3 text-mp-stone-dark font-sans text-sm
          transition-all duration-300;
 }
 
@@ -72,7 +102,7 @@ input:not(:placeholder-shown) + .label-float,
 input:focus + .label-float,
 textarea:not(:placeholder-shown) + .label-float,
 textarea:focus + .label-float {
-  @apply -top-5 text-xs text-tertiary;
+  @apply -top-5 text-xs text-mp-gold;
 }
 
 /* ── Page fade-in ── */
@@ -83,4 +113,40 @@ textarea:focus + .label-float {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Hero parallax container ── */
+.hero-parallax {
+  will-change: transform;
+}
+
+/* ── Masonry grid: first card spans two rows ── */
+.masonry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+.masonry-grid .masonry-featured {
+  grid-row: span 2;
+}
+
+/* ── Reduced-motion safety net ── */
+@media (prefers-reduced-motion: reduce) {
+  .card-image {
+    transition: none;
+  }
+  .scroll-cue {
+    animation: none;
+  }
+}
+
+/* ── Mobile: disable parallax and clip-path on touch ── */
+@media (hover: none) and (pointer: coarse) {
+  .card-image {
+    clip-path: none;
+    transition: none;
+  }
+  .hero-parallax {
+    transform: none !important;
+  }
 }

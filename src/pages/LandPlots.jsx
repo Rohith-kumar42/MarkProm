@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import InquiryForm from '../components/InquiryForm';
 
 const PLOTS = [
@@ -12,7 +12,6 @@ const PLOTS = [
     tags: ['Coastal', 'Sloped'],
     tagIcons: ['water', 'landscape'],
     badge: 'Featured',
-    badgeBg: 'bg-tertiary/90 text-white',
     labelBg: 'Luxury Destination',
     cols: 2,
     img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBdE-dVKxzWe94KJEQ-w90lt9CAGZr4jn6UfT9t6F4WtqMCa8eLWLrtUtjCHZTum18flN1PhPRaUgJzYHnGlbDSXajBevIpp2D7ktmzEp2Pxu2Vj_1qD0bwkSGP7GOtArxm14DF7PvjfCnj0jixxrt8X8xf6guJDQh-7SYGPEIcNVUB5GZJnQV0V145URmp7ON3Gqun9J2kKdV3kawwz0jejFDz64RwTxGieFUYwTVgTnbYsuj65QMsTTCN2yx--aUMA8jIpBAUWHQu',
@@ -57,8 +56,8 @@ const PLOTS = [
 ];
 
 const formFields = [
-  { id: 'name',  label: 'Full Name',      type: 'text',  placeholder: 'Full Name',       required: true,  half: true },
-  { id: 'email', label: 'Corporate Email',type: 'email', placeholder: 'Corporate Email', required: true,  half: true },
+  { id: 'name',  label: 'Full Name',       type: 'text',  placeholder: 'Full Name',       required: true,  half: true },
+  { id: 'email', label: 'Corporate Email', type: 'email', placeholder: 'Corporate Email', required: true,  half: true },
   {
     id: 'interest', label: 'Primary Area of Interest', type: 'select', required: true, half: false,
     options: [
@@ -70,16 +69,23 @@ const formFields = [
 ];
 
 export default function LandPlots() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
-    <main className="page-enter pt-32 pb-24 px-6 md:px-12 lg:px-24 max-w-[1600px] mx-auto min-h-screen">
+    <main className="page-enter pt-32 pb-24 px-6 md:px-12 lg:px-24 max-w-[1600px] mx-auto min-h-screen bg-mp-cream">
       {/* Header */}
       <header className="mb-24 mt-12 max-w-4xl">
-        <h2 className="text-tertiary font-label uppercase tracking-[0.1em] text-sm font-bold mb-6">Investment Portfolio</h2>
-        <h1 className="font-headline text-5xl md:text-7xl font-bold text-primary leading-tight mb-8">
-          Curated Landscapes for Visionary Development
+        <h2 className="text-mp-gold-dark font-sans uppercase tracking-[0.1em] text-xs font-bold mb-6">
+          {/* COPY: original — "Investment Portfolio" — flagged for human review */}
+          Land Plots
+        </h2>
+        <h1 className="font-display font-light text-5xl md:text-7xl text-mp-forest leading-tight mb-8">
+          {/* COPY: original — "Curated Landscapes for Visionary Development" — flagged for human review */}
+          The land that's left.
         </h1>
-        <p className="font-body text-on-surface-variant text-lg md:text-xl max-w-2xl leading-relaxed">
-          Explore our exclusive collection of pristine land plots, primed for luxury destination transformations. Uncover unparalleled opportunities in high-growth coastal and mountain regions.
+        <p className="font-sans text-mp-stone-dark text-lg md:text-xl max-w-2xl leading-relaxed">
+          {/* COPY: original — "Explore our exclusive collection of pristine land plots..." — flagged for human review */}
+          A small selection of sites in coastal and mountain regions. Each one chosen for what it offers before anyone builds on it.
         </p>
       </header>
 
@@ -88,13 +94,12 @@ export default function LandPlots() {
         {PLOTS.map((plot, i) => (
           <motion.article
             key={plot.id}
-            initial={{ opacity: 0, y: 24 }}
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className={`bg-surface-container-lowest rounded-lg overflow-hidden group cursor-pointer
-                        shadow-[0_10px_40px_rgba(38,39,125,0.05)]
-                        hover:shadow-[0_20px_60px_rgba(38,39,125,0.08)] transition-all duration-500
+            className={`resort-card bg-mp-white rounded-lg overflow-hidden group cursor-pointer
+                        shadow-mp-ambient hover:shadow-mp-ambient-lg transition-shadow duration-500
                         ${plot.large ? 'col-span-1 md:col-span-2' : ''}
                         ${plot.horizontal ? 'flex flex-col md:flex-row' : ''}`}
           >
@@ -103,17 +108,17 @@ export default function LandPlots() {
               <img
                 src={plot.img}
                 alt={plot.title}
-                className="w-full h-full object-cover transform group-hover:scale-[1.03] transition-transform duration-700 ease-in-out"
+                className="card-image w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/50 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-mp-forest/40 to-transparent" />
               <div className="absolute top-6 left-6 flex gap-3">
                 {plot.labelBg && (
-                  <span className="bg-surface-container-lowest/80 backdrop-blur-md text-primary font-label text-xs font-bold px-3 py-1.5 rounded-DEFAULT tracking-wider uppercase">
+                  <span className="bg-mp-cream/90 backdrop-blur-md text-mp-forest font-sans text-xs font-bold px-3 py-1.5 rounded-DEFAULT tracking-wider uppercase">
                     {plot.labelBg}
                   </span>
                 )}
                 {plot.badge && (
-                  <span className={`${plot.badgeBg} font-label text-xs font-bold px-3 py-1.5 rounded-DEFAULT tracking-wider uppercase`}>
+                  <span className="bg-mp-gold text-mp-forest-deep font-sans text-xs font-bold px-3 py-1.5 rounded-DEFAULT tracking-wider uppercase">
                     {plot.badge}
                   </span>
                 )}
@@ -122,39 +127,41 @@ export default function LandPlots() {
 
             {/* Content */}
             <div className={`p-8 ${plot.large ? 'md:p-12' : ''} ${plot.horizontal ? 'md:w-3/5 flex flex-col justify-center' : ''}`}>
-              <h3 className="font-headline text-2xl md:text-3xl font-bold text-primary mb-3">{plot.title}</h3>
-              <p className="font-label text-on-surface-variant flex items-center gap-2 mb-8">
-                <span className="material-symbols-outlined text-tertiary text-lg">location_on</span>
+              <h3 className="font-sans font-bold text-xl md:text-2xl text-mp-ink mb-3 group-hover:text-mp-gold transition-colors duration-300">
+                {plot.title}
+              </h3>
+              <p className="font-sans text-mp-stone-dark flex items-center gap-2 mb-8">
+                <span className="material-symbols-outlined text-mp-gold text-lg">location_on</span>
                 {plot.location}
               </p>
 
               {plot.large ? (
                 <div className="grid grid-cols-3 gap-6 mb-8">
                   {[
-                    { label: 'Total Area', value: plot.area },
+                    { label: 'Total Area',  value: plot.area },
                     { label: 'Price / Sq.Ft', value: plot.perSqFt },
                     { label: 'Total Price', value: plot.total, bold: true },
                   ].map(({ label, value, bold }) => (
                     <div key={label}>
-                      <p className="font-label text-xs uppercase tracking-wider text-outline mb-1">{label}</p>
-                      <p className={`font-body text-xl ${bold ? 'font-bold text-primary' : 'font-semibold text-on-surface'}`}>{value}</p>
+                      <p className="font-sans text-xs uppercase tracking-wider text-mp-stone-dark mb-1">{label}</p>
+                      <p className={`font-sans text-xl ${bold ? 'font-bold text-mp-forest' : 'font-semibold text-mp-ink'}`}>{value}</p>
                     </div>
                   ))}
                 </div>
               ) : (
                 <div className="space-y-4 mb-8">
                   {[
-                    { label: 'Area', value: plot.area },
+                    { label: 'Area',      value: plot.area },
                     { label: 'Per Sq.Ft', value: plot.perSqFt },
                   ].map(({ label, value }) => (
-                    <div key={label} className="flex justify-between items-end border-b border-surface-container-high pb-2">
-                      <span className="font-label text-xs uppercase tracking-wider text-outline">{label}</span>
-                      <span className="font-body font-semibold text-on-surface">{value}</span>
+                    <div key={label} className="flex justify-between items-end border-b border-mp-stone pb-2">
+                      <span className="font-sans text-xs uppercase tracking-wider text-mp-stone-dark">{label}</span>
+                      <span className="font-sans font-semibold text-mp-ink">{value}</span>
                     </div>
                   ))}
                   <div className="flex justify-between items-end pb-2">
-                    <span className="font-label text-xs uppercase tracking-wider text-outline">Total</span>
-                    <span className="font-body font-bold text-lg text-primary">{plot.total}</span>
+                    <span className="font-sans text-xs uppercase tracking-wider text-mp-stone-dark">Total</span>
+                    <span className="font-sans font-bold text-lg text-mp-forest">{plot.total}</span>
                   </div>
                 </div>
               )}
@@ -163,14 +170,17 @@ export default function LandPlots() {
                 {plot.tags && (
                   <div className="flex gap-3">
                     {plot.tags.map((tag, idx) => (
-                      <span key={tag} className="flex items-center gap-1 text-sm font-label text-on-surface-variant bg-surface-container-high px-3 py-1 rounded-DEFAULT">
+                      <span key={tag} className="flex items-center gap-1 text-sm font-sans text-mp-stone-dark bg-mp-stone px-3 py-1 rounded-DEFAULT">
                         <span className="material-symbols-outlined text-sm">{plot.tagIcons[idx]}</span> {tag}
                       </span>
                     ))}
                   </div>
                 )}
-                <button className="text-primary font-label font-bold text-sm tracking-wide
-                                   group-hover:text-tertiary transition-colors flex items-center gap-2 ml-auto">
+                <button
+                  className="text-mp-forest font-sans font-bold text-sm tracking-wide
+                             group-hover:text-mp-gold transition-colors flex items-center gap-2 ml-auto
+                             focus:outline-none focus:ring-2 focus:ring-mp-gold focus:ring-offset-2 focus:ring-offset-mp-cream"
+                >
                   View Prospectus
                   <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
                 </button>
@@ -181,13 +191,14 @@ export default function LandPlots() {
       </div>
 
       {/* Request Portfolio Access */}
-      <section className="max-w-4xl mx-auto bg-surface-container-low rounded-xl p-10 md:p-16 relative overflow-hidden
-                          shadow-[0_20px_60px_rgba(38,39,125,0.05)]">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary-fixed-dim rounded-full blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <section className="max-w-4xl mx-auto bg-mp-stone rounded-xl p-10 md:p-16 relative overflow-hidden shadow-mp-ambient">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-mp-gold/10 rounded-full blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="text-center mb-12">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-primary mb-4">Request Portfolio Access</h2>
-          <p className="font-body text-on-surface-variant max-w-xl mx-auto">
-            Connect with our acquisition specialists for detailed land surveys, zoning documents, and private viewings.
+          {/* COPY: original — "Request Portfolio Access" — flagged for human review */}
+          <h2 className="font-display font-light text-3xl md:text-4xl text-mp-forest mb-4">Request access.</h2>
+          <p className="font-sans text-mp-stone-dark max-w-xl mx-auto">
+            {/* COPY: original — "Connect with our acquisition specialists..." — flagged for human review */}
+            We'll share land surveys, zoning documents, and arrange a private viewing.
           </p>
         </div>
         <InquiryForm fields={formFields} submitLabel="Initiate Discussion" />

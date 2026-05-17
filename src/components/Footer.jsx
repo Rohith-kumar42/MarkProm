@@ -7,30 +7,33 @@ const investmentLinks = [
 ];
 
 const corporateLinks = [
-  { label: 'Sustainability',      to: '#' },
-  { label: 'Governance',          to: '#' },
-  { label: 'Investor Relations',  to: '#' },
-  { label: 'Privacy',             to: '#' },
+  { label: 'Sustainability',     to: '#' },
+  { label: 'Governance',         to: '#' },
+  { label: 'Investor Relations', to: '#' },
+  { label: 'Privacy',            to: '#' },
 ];
 
 export default function Footer() {
   return (
-    <footer className="bg-surface border-t border-slate-100 w-full py-16 px-6 md:px-12">
+    <footer className="bg-mp-ink w-full py-16 px-6 md:px-12">
       <div className="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
         {/* Brand */}
         <div className="md:col-span-1">
           <Link
             to="/"
-            className="text-xl font-headline font-semibold text-primary mb-5 block uppercase tracking-widest"
+            className="text-xl font-display font-light text-mp-gold mb-5 block uppercase tracking-widest
+                       focus:outline-none focus:ring-2 focus:ring-mp-gold focus:ring-offset-2 focus:ring-offset-mp-ink"
           >
             Markprom
           </Link>
-          <p className="font-body text-sm text-slate-500 mb-6 leading-relaxed">
-            Curating high-yield, architecturally significant investments in prime locations.
+          {/* COPY: original — "Curating high-yield, architecturally significant investments..." — flagged for human review */}
+          <p className="font-sans text-sm text-mp-stone-dark mb-6 leading-relaxed">
+            Resort properties in the hills above Coimbatore. Built to last.
           </p>
           <div className="flex gap-4">
             <a href="https://markprom.com" target="_blank" rel="noreferrer"
-               className="text-slate-400 hover:text-primary transition-colors duration-300">
+               className="text-mp-stone-dark hover:text-mp-gold transition-colors duration-300
+                          focus:outline-none focus:ring-2 focus:ring-mp-gold focus:ring-offset-2 focus:ring-offset-mp-ink">
               <span className="material-symbols-outlined">language</span>
             </a>
           </div>
@@ -39,7 +42,7 @@ export default function Footer() {
         {/* Link columns */}
         <div className="md:col-span-2 grid grid-cols-2 gap-8">
           <div>
-            <h4 className="font-body text-xs font-bold text-primary uppercase tracking-wider mb-6">
+            <h4 className="font-sans text-xs font-bold text-mp-gold uppercase tracking-wider mb-6">
               Investments
             </h4>
             <ul className="space-y-4">
@@ -47,8 +50,9 @@ export default function Footer() {
                 <li key={label}>
                   <Link
                     to={to}
-                    className="font-body text-sm text-slate-500 uppercase tracking-tighter
-                               hover:text-tertiary-fixed-dim transition-colors duration-300"
+                    className="font-sans text-sm text-mp-stone-dark uppercase tracking-tighter
+                               hover:text-mp-gold transition-colors duration-300
+                               focus:outline-none focus:ring-2 focus:ring-mp-gold focus:ring-offset-2 focus:ring-offset-mp-ink"
                   >
                     {label}
                   </Link>
@@ -57,7 +61,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4 className="font-body text-xs font-bold text-primary uppercase tracking-wider mb-6">
+            <h4 className="font-sans text-xs font-bold text-mp-gold uppercase tracking-wider mb-6">
               Corporate
             </h4>
             <ul className="space-y-4">
@@ -65,8 +69,9 @@ export default function Footer() {
                 <li key={label}>
                   <a
                     href={to}
-                    className="font-body text-sm text-slate-500 uppercase tracking-tighter
-                               hover:text-tertiary-fixed-dim transition-colors duration-300"
+                    className="font-sans text-sm text-mp-stone-dark uppercase tracking-tighter
+                               hover:text-mp-gold transition-colors duration-300
+                               focus:outline-none focus:ring-2 focus:ring-mp-gold focus:ring-offset-2 focus:ring-offset-mp-ink"
                   >
                     {label}
                   </a>
@@ -78,12 +83,12 @@ export default function Footer() {
 
         {/* Contact */}
         <div className="md:col-span-1">
-          <h4 className="font-body text-xs font-bold text-primary uppercase tracking-wider mb-6">
+          <h4 className="font-sans text-xs font-bold text-mp-gold uppercase tracking-wider mb-6">
             Contact
           </h4>
-          <p className="font-body text-sm text-slate-500 mb-1">admin@markprom.com</p>
-          <p className="font-body text-sm text-slate-500 mb-1">73393 36300</p>
-          <p className="font-body text-sm text-slate-500 leading-relaxed mt-4">
+          <p className="font-sans text-sm text-mp-stone-dark mb-1">admin@markprom.com</p>
+          <p className="font-sans text-sm text-mp-stone-dark mb-1">73393 36300</p>
+          <p className="font-sans text-sm text-mp-stone-dark leading-relaxed mt-4">
             1933, 2nd Floor, Karthikeya Stores Upstairs,<br />
             Trichy Road, CBE - 641 045
           </p>
@@ -91,9 +96,10 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="max-w-[1440px] mx-auto mt-16 pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="font-body text-sm tracking-wide text-slate-500">
-          © 2024 Markprom. Architectural Integrity in Real Estate.
+      <div className="max-w-[1440px] mx-auto mt-16 pt-8 border-t border-mp-forest/40 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p className="font-sans text-sm tracking-wide text-mp-stone-dark">
+          {/* COPY: original — "Architectural Integrity in Real Estate" — flagged for human review */}
+          © 2024 Markprom. The hills above Coimbatore.
         </p>
       </div>
     </footer>

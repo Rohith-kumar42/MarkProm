@@ -1,57 +1,38 @@
 /** @type {import('tailwindcss').Config} */
+// TODO: HUMAN REVIEW — OKLCH colour palette must be approved on physical screens before mass-replacement.
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        'surface-dim': '#d9dadc',
-        secondary: '#5b5d72',
-        'on-secondary-fixed': '#181a2c',
-        'surface-container-low': '#f2f4f6',
-        tertiary: '#453000',
-        'on-surface-variant': '#464651',
-        'on-secondary-container': '#616378',
-        'error-container': '#ffdad6',
-        'surface-tint': '#5355ab',
-        'surface-container-lowest': '#ffffff',
-        'on-tertiary-fixed': '#261900',
-        'secondary-fixed-dim': '#c4c5dd',
-        'on-primary-fixed-variant': '#3a3c91',
-        'on-primary': '#ffffff',
-        'surface-variant': '#e1e2e4',
-        'primary-fixed': '#e1e0ff',
-        'secondary-fixed': '#e0e0fa',
-        'inverse-on-surface': '#f0f1f3',
-        'surface-container': '#edeef0',
-        'on-secondary': '#ffffff',
-        'primary-container': '#3e4095',
-        'on-tertiary-container': '#dcb56c',
-        'outline-variant': '#c7c5d3',
-        primary: '#26277d',
-        'primary-fixed-dim': '#c0c1ff',
-        'on-error': '#ffffff',
-        'on-primary-container': '#b2b3ff',
-        'on-secondary-fixed-variant': '#444559',
-        'on-tertiary-fixed-variant': '#5d4201',
-        'on-background': '#191c1e',
-        'tertiary-container': '#614604',
-        'on-primary-fixed': '#090467',
-        'on-surface': '#191c1e',
-        'secondary-container': '#e0e0fa',
-        'inverse-surface': '#2e3132',
-        'surface-bright': '#f8f9fb',
-        'on-error-container': '#93000a',
-        error: '#ba1a1a',
-        outline: '#777683',
-        'tertiary-fixed': '#ffdea5',
-        'surface-container-high': '#e7e8ea',
-        surface: '#f8f9fb',
-        'tertiary-fixed-dim': '#e9c176',
-        'inverse-primary': '#c0c1ff',
-        'on-tertiary': '#ffffff',
-        background: '#f8f9fb',
-        'surface-container-highest': '#e1e2e4',
+        // ── MarkProm brand tokens (OKLCH) ──────────────────────────
+        'mp-forest': {
+          DEFAULT: 'oklch(28% 0.07 145)',
+          light:   'oklch(38% 0.07 145)',
+          deep:    'oklch(18% 0.05 145)',
+        },
+        'mp-gold': {
+          DEFAULT: 'oklch(72% 0.16 75)',
+          muted:   'oklch(80% 0.10 75)',
+          dark:    'oklch(58% 0.14 75)',
+        },
+        'mp-stone': {
+          DEFAULT: 'oklch(92% 0.01 90)',
+          dark:    'oklch(50% 0.01 90)',
+        },
+        'mp-cream': 'oklch(97% 0.01 90)',
+        'mp-ink':   'oklch(18% 0.02 260)',
+        'mp-white': '#ffffff',
+      },
+      fontFamily: {
+        // TODO: HUMAN REVIEW — Display typeface must be approved by a designer.
+        display: ['"Instrument Serif"', 'Georgia', 'serif'],
+        sans:    ['Manrope', 'system-ui', 'sans-serif'],
+        // Keep legacy aliases so any remaining components don't break
+        headline: ['"Instrument Serif"', 'Georgia', 'serif'],
+        body:     ['Manrope', 'sans-serif'],
+        label:    ['Manrope', 'sans-serif'],
       },
       borderRadius: {
         DEFAULT: '0.125rem',
@@ -59,23 +40,23 @@ export default {
         xl: '0.5rem',
         full: '0.75rem',
       },
-      fontFamily: {
-        headline: ['"Noto Serif"', 'serif'],
-        body: ['Manrope', 'sans-serif'],
-        label: ['Manrope', 'sans-serif'],
-      },
       boxShadow: {
-        ambient: '0 30px 60px rgba(38,39,125,0.08)',
+        // Brand-tinted ambient shadow replaces generic shadow-xl
+        'mp-ambient':    '0 8px 40px oklch(28% 0.07 145 / 0.12)',
+        'mp-ambient-sm': '0 4px 20px oklch(28% 0.07 145 / 0.08)',
+        'mp-ambient-lg': '0 20px 60px oklch(28% 0.07 145 / 0.16)',
+        // Legacy alias so existing .ambient-shadow class still works
+        ambient:    '0 30px 60px rgba(38, 39, 125, 0.08)',
         'ambient-sm': '0 10px 30px rgba(38,39,125,0.05)',
         'ambient-lg': '0 40px 80px rgba(38,39,125,0.10)',
       },
       keyframes: {
         'fade-up': {
-          '0%': { opacity: '0', transform: 'translateY(24px)' },
+          '0%':   { opacity: '0', transform: 'translateY(24px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         'fade-in': {
-          '0%': { opacity: '0' },
+          '0%':   { opacity: '0' },
           '100%': { opacity: '1' },
         },
       },
